@@ -27,6 +27,7 @@ class ViewController: UIViewController {
         savingProjectsToFile(studentList)
         let data = getData() // get Prjoect Typle list of data
         print("data List: \(data)")
+        
     }
     
     func getData() -> [Project] {
@@ -50,6 +51,15 @@ class ViewController: UIViewController {
         }catch{
             print("Error Saving Projects : \(error)")
         }
+    }
+    
+    func saveInUserDefaults(){
+        UserDefaults.standard.set(UIImage(named: "planeImage")?.pngData(), forKey: "data")
+        let getData = UserDefaults.standard.data(forKey: "data")
+        
+        let image = UIImageView(frame: CGRect(x: 10, y: 100, width: 100, height: 100))
+        self.view.addSubview(image)
+        image.image = UIImage(data: getData!)
     }
 }
 
