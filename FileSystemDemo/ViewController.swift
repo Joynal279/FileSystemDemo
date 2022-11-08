@@ -24,14 +24,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //save Model
-        savingProjectsToFile(studentList)
-        let data = getData() // get Prjoect Typle list of data
+        saveDataToFile(studentList)
+        let data = getDataFromFile() // get Prjoect Typle list of data
         print("data List: \(data)")
         
     }
     
-    func getData() -> [Project] {
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("SavedProjectToFile")
+    func getDataFromFile() -> [Project] {
+        let path = getDocumentDirectory().appendingPathComponent("projectDirectoryFile")
         let recData : Data!
         do{
             recData = try Data(contentsOf: path)
@@ -43,9 +43,9 @@ class ViewController: UIViewController {
         return retreiveArray
     }
     
-    func savingProjectsToFile(_ projects : [Project]){
+    func saveDataToFile(_ projects : [Project]){
         let recData = try! JSONEncoder().encode(projects)
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("SavedProjectToFile")
+        let path = getDocumentDirectory().appendingPathComponent("projectDirectoryFile")
         do{
             try recData.write(to: path)
         }catch{
@@ -60,6 +60,13 @@ class ViewController: UIViewController {
         let image = UIImageView(frame: CGRect(x: 10, y: 100, width: 100, height: 100))
         self.view.addSubview(image)
         image.image = UIImage(data: getData!)
+    }
+    
+    func getDocumentDirectory() -> URL {
+        //find all possible documents directories for this user
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        //just sent first one, which ought to be the only one
+        return paths[0]
     }
 }
 
